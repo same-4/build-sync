@@ -13,7 +13,7 @@ export interface Project {
   createdAt: string;
 }
 
-export type Role = "project_manager" | "procurement_officer" | "admin";
+export type Role = "project_manager" | "project_engineer" | "store_keeper" | "procurement_officer" | "admin";
 
 export interface User {
   email: string;

@@ -82,6 +82,8 @@ const Login = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="project_manager">Project Manager</SelectItem>
+                    <SelectItem value="project_engineer">Project Engineer</SelectItem>
+                    <SelectItem value="store_keeper">Store Keeper</SelectItem>
                     <SelectItem value="procurement_officer">Procurement Officer</SelectItem>
                     <SelectItem value="admin">Administrator</SelectItem>
                   </SelectContent>
