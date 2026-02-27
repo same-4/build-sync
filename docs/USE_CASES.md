@@ -1,263 +1,261 @@
-BuildSync – Use Cases
-1. Overview
+# BuildSync – Use Cases Document
 
-BuildSync is a web-based construction planning application that allows project stakeholders to estimate materials, manpower, and manage execution workflows efficiently.
+## 1. Overview
 
-This document defines all system use cases for the MVP and extended version.
+BuildSync is a web-based construction planning application that helps estimate materials and manpower based on project quantities and predefined coefficients.
 
-2. Actors
+This document defines all system use cases for both MVP and extended versions.
 
-Admin
+---
 
-Project Manager (PM)
+## 2. Actors
 
-Project Engineer (PE)
+- Admin
+- Project Manager (PM)
+- Project Engineer (PE)
+- Store Keeper
+- Procurement Officer
+- HR / Workforce Manager
+- System (Calculation Engine)
 
-Store Keeper
+---
 
-Procurement Officer
+# 3. MVP Use Cases (Phase 1)
 
-HR / Workforce Manager
+---
 
-System (Calculation Engine)
+## UC-01: User Login
 
-3. MVP Use Cases (Phase 1)
-UC-01: User Login
+**Actor:** Project Manager  
+**Precondition:** User account exists  
 
-Actor: Project Manager
-Description: User logs into the system using email and password.
-Precondition: User account exists.
-Main Flow:
+### Main Flow:
+1. User enters email and password.
+2. System validates credentials.
+3. System grants access to dashboard.
 
-User enters email and password.
+### Postcondition:
+- User is authenticated.
 
-System validates credentials.
+---
 
-System grants dashboard access.
+## UC-02: Create Project
 
-Postcondition: User is authenticated and redirected to dashboard.
+**Actor:** Project Manager  
+**Precondition:** User is logged in  
 
-UC-02: Create Project
+### Main Flow:
+1. PM enters project name.
+2. PM selects start date.
+3. PM selects end date.
+4. PM clicks Save.
+5. System stores project in database.
 
-Actor: Project Manager
-Description: PM creates a new project.
-Precondition: User is logged in.
-Main Flow:
+### Postcondition:
+- Project is successfully created.
 
-PM enters project name.
+---
 
-PM selects start date and end date.
+## UC-03: Add Work Items
 
-PM saves project.
+**Actor:** Project Manager  
 
-System stores project details.
+### Main Flow:
+1. Select project.
+2. Enter work type (Concrete, Brickwork, etc.).
+3. Enter quantity.
+4. Save work item.
 
-Postcondition: Project is created in database.
+### Postcondition:
+- Work item is linked to project.
 
-UC-03: Add Work Items
+---
 
-Actor: Project Manager
-Description: PM adds work items with quantities.
-Main Flow:
+## UC-04: Generate Resource Plan
 
-Select project.
+**Actor:** Project Manager  
+**System Actor:** Calculation Engine  
 
-Enter work type (Concrete, Brickwork, etc.).
+### Main Flow:
+1. PM clicks "Generate Plan".
+2. System retrieves work quantities.
+3. System fetches material coefficients.
+4. System fetches labor coefficients.
+5. System calculates:
 
-Enter quantity.
+   - Material Required = Quantity × Material Coefficient
+   - Manpower Required = Quantity × Labor Coefficient
 
-Save work item.
+6. System displays calculated results.
 
-Postcondition: Work item linked to project.
+### Postcondition:
+- Resource estimation is generated.
 
-UC-04: Generate Resource Plan
+---
 
-Actor: Project Manager
-Description: System calculates materials and manpower.
-Main Flow:
+## UC-05: View Dashboard
 
-PM clicks "Generate Plan".
+**Actor:** Project Manager  
 
-System retrieves work quantities.
+### Main Flow:
+1. Open dashboard.
+2. View total materials required.
+3. View total manpower required.
+4. View project duration.
 
-System fetches material & labor coefficients.
+### Postcondition:
+- PM gets overall project summary.
 
-System calculates:
+---
 
-Material Required = Quantity × Material Coefficient
+# 4. Extended Use Cases (Phase 2+)
 
-Manpower Required = Quantity × Labor Coefficient
+---
 
-System displays results.
+## UC-06: Task Assignment
 
-Postcondition: Resource estimation is shown.
+**Actor:** Project Engineer  
 
-UC-05: View Dashboard
+### Main Flow:
+1. Select project.
+2. Create task.
+3. Assign manpower.
+4. Set deadline.
+5. Save task.
 
-Actor: Project Manager
-Description: View summary of project resources.
-Main Flow:
+### Postcondition:
+- Task added to project task list.
 
-Open dashboard.
+---
 
-View total materials.
+## UC-07: Material Request (Indent)
 
-View total manpower.
+**Actor:** Project Engineer  
 
-View project duration.
+### Main Flow:
+1. Select project.
+2. Enter material name.
+3. Enter quantity required.
+4. Submit request.
 
-Postcondition: PM has overview of project resources.
+### Postcondition:
+- Request sent to Store Keeper.
 
-4. Extended Use Cases (Phase 2 & Beyond)
-UC-06: Task Assignment
+---
 
-Actor: Project Engineer
-Description: Break project into tasks.
-Main Flow:
+## UC-08: Inventory Check
 
-Select project.
+**Actor:** Store Keeper  
 
-Create task.
+### Main Flow:
+1. View material request.
+2. Check stock availability.
+3. If stock available → Issue material.
+4. If not available → Forward to Procurement.
 
-Assign manpower.
+### Postcondition:
+- Stock updated OR request escalated.
 
-Set deadline.
+---
 
-Postcondition: Task added to task list.
+## UC-09: Create Purchase Order
 
-UC-07: Material Request (Indent)
+**Actor:** Procurement Officer  
 
-Actor: Project Engineer
-Description: Request materials for execution.
-Main Flow:
+### Main Flow:
+1. Review material request.
+2. Select vendor.
+3. Enter quantity and price.
+4. Generate PO.
+5. Save PO.
 
-Select project.
+### Postcondition:
+- Purchase Order stored in system.
 
-Enter material name and quantity.
+---
 
-Submit request.
+## UC-10: Daily Progress Update
 
-Postcondition: Material request sent to Store Keeper.
+**Actor:** Project Engineer  
 
-UC-08: Inventory Check
+### Main Flow:
+1. Select task.
+2. Enter percentage completion.
+3. Enter materials consumed.
+4. Save update.
 
-Actor: Store Keeper
-Description: Check available stock.
-Main Flow:
+### Postcondition:
+- Project progress updated.
 
-View material request.
+---
 
-Check stock level.
+## UC-11: View Reports
 
-Approve and issue material OR escalate.
+**Actor:** Project Manager  
 
-Postcondition: Stock updated or request forwarded.
+### Main Flow:
+1. Open reports page.
+2. View:
+   - Completion percentage
+   - Resource usage
+   - Labor efficiency
 
-UC-09: Create Purchase Order
+### Postcondition:
+- PM can monitor project performance.
 
-Actor: Procurement Officer
-Description: Create PO if stock insufficient.
-Main Flow:
+---
 
-Review material request.
+# 5. System Use Cases
 
-Select vendor.
+---
 
-Generate PO.
+## UC-S01: Automatic Resource Validation
 
-Save PO.
+**Actor:** System  
 
-Postcondition: PO stored in system.
+### Flow:
+1. Compare manpower against productivity rate.
+2. Compare duration vs quantity.
+3. Flag mismatch if detected.
 
-UC-10: Daily Progress Update
+---
 
-Actor: Project Engineer
-Description: Update daily progress.
-Main Flow:
+## UC-S02: Low Stock Alert
 
-Select task.
+**Actor:** System  
 
-Enter % completion.
+### Flow:
+1. Monitor inventory levels.
+2. Trigger alert if stock below threshold.
 
-Enter materials consumed.
+---
 
-Save update.
+## UC-S03: Data Storage & Retrieval
 
-Postcondition: Project progress updated.
+**Actor:** System  
 
-UC-11: View Reports
+### Flow:
+1. Store project data securely.
+2. Retrieve data when requested.
 
-Actor: Project Manager
-Description: View performance reports.
-Main Flow:
+---
 
-Open reports page.
+# 6. MVP Scope Summary
 
-View:
+## Included in MVP:
+- User Login
+- Project Creation
+- Add Work Items
+- Resource Calculation
+- Dashboard View
 
-Completion percentage
+## Excluded from MVP:
+- Inventory Management
+- Purchase Orders
+- Advanced Reporting
+- AI Predictions
+- Multi-role workflow
 
-Resource usage
+---
 
-Labor efficiency
-
-Postcondition: PM can monitor performance.
-
-5. System Use Cases
-UC-S01: Automatic Resource Validation
-
-Actor: System
-Description: Validate if manpower matches timeline.
-Flow:
-
-Compare productivity rates.
-
-Check project duration.
-
-Flag mismatch if required.
-
-UC-S02: Low Stock Alert
-
-Actor: System
-Description: Alert when inventory falls below threshold.
-
-UC-S03: Data Storage & Retrieval
-
-Actor: System
-Description: Store and retrieve project data securely.
-
-6. Future Advanced Use Cases
-
-AI delay prediction
-
-Cost overrun forecasting
-
-Multi-project portfolio dashboard
-
-Vendor performance analysis
-
-Mobile site engineer app
-
-7. MVP Scope Summary
-
-Included:
-
-Login
-
-Project Creation
-
-Work Items
-
-Auto Calculation
-
-Dashboard
-
-Excluded:
-
-Inventory
-
-PO Management
-
-Advanced Reporting
-
-AI Predictions
+End of Use Cases Document.
