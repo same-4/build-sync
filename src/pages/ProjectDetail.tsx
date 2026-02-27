@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProject, saveProject } from "@/lib/storage";
+import { getProject, saveProject, getMaterialRequestsForProject, saveMaterialRequest } from "@/lib/storage";
+import { useAuth } from "@/contexts/AuthContext";
 import { WORK_TYPES, calculateMaterials, calculateManpower } from "@/lib/coefficients";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,17 +10,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Plus, Trash2, Package, Users, HardHat, Calendar } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Package, Users, HardHat, Calendar, Send } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import type { Project, WorkItem } from "@/lib/types";
+import type { Project, WorkItem, MaterialRequest } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [project, setProject] = useState<Project | null>(null);
   const [workType, setWorkType] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [materialRequests, setMaterialRequests] = useState<MaterialRequest[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -30,6 +34,7 @@ const ProjectDetail = () => {
       return;
     }
     setProject(p);
+    setMaterialRequests(getMaterialRequestsForProject(id));
   }, [id, navigate]);
 
   if (!project) return null;
@@ -60,6 +65,28 @@ const ProjectDetail = () => {
     saveProject(updated);
     setProject(updated);
     toast.success("Work item removed");
+  };
+
+  const handleGenerateMR = () => {
+    if (materials.length === 0) return;
+    const mr: MaterialRequest = {
+      id: crypto.randomUUID(),
+      projectId: project.id,
+      projectName: project.name,
+      materials: materials,
+      status: "pending",
+      createdAt: new Date().toISOString()
+    };
+    saveMaterialRequest(mr);
+    setMaterialRequests(getMaterialRequestsForProject(project.id));
+    toast.success("Material Request Generated");
+  };
+
+  const handleApproveMR = (mr: MaterialRequest) => {
+    const updated = { ...mr, status: "approved" as const };
+    saveMaterialRequest(updated);
+    setMaterialRequests(getMaterialRequestsForProject(project.id));
+    toast.success("Material Request Approved");
   };
 
   return (
@@ -159,10 +186,15 @@ const ProjectDetail = () => {
 
             <TabsContent value="materials">
               <Card>
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-3 flex flex-row items-center justify-between">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Package className="w-5 h-5 text-accent" /> Total Materials Required
                   </CardTitle>
+                  {(user?.role === "project_manager" || user?.role === "admin") && materials.length > 0 && (
+                    <Button onClick={handleGenerateMR} size="sm" variant="outline" className="h-8">
+                      <Send className="w-4 h-4 mr-2" /> Generate Request
+                    </Button>
+                  )}
                 </CardHeader>
                 <CardContent className="p-0">
                   {materials.length === 0 ? (
@@ -189,6 +221,33 @@ const ProjectDetail = () => {
                   )}
                 </CardContent>
               </Card>
+
+              {/* Material Requests Section */}
+              {materialRequests.length > 0 && (
+                <div className="mt-6 space-y-4">
+                  <h3 className="font-semibold text-lg">Material Requests</h3>
+                  {materialRequests.map((mr) => (
+                    <Card key={mr.id}>
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-1">
+                            <CardTitle className="text-sm">Request {mr.id.split("-")[0]}</CardTitle>
+                            <CardDescription>Created {format(new Date(mr.createdAt), "PP")}</CardDescription>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Badge variant={mr.status === "pending" ? "outline" : mr.status === "approved" ? "default" : "secondary"}>
+                              {mr.status.toUpperCase()}
+                            </Badge>
+                            {mr.status === "pending" && (user?.role === "project_manager" || user?.role === "admin") && (
+                              <Button size="sm" onClick={() => handleApproveMR(mr)}>Approve</Button>
+                            )}
+                          </div>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="manpower">
