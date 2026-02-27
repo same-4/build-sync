@@ -13,8 +13,25 @@ export interface Project {
   createdAt: string;
 }
 
+export type Role = "project_manager" | "procurement_officer" | "admin";
+
 export interface User {
   email: string;
   name: string;
-  role: "project_manager";
+  role: Role;
+}
+
+export interface Material {
+  name: string;
+  quantity: number;
+  unit: string;
+}
+
+export interface MaterialRequest {
+  id: string;
+  projectId: string;
+  projectName: string;
+  materials: Material[];
+  status: "pending" | "approved" | "ordered" | "delivered";
+  createdAt: string;
 }

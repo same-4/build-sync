@@ -1,20 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { User } from "@/lib/types";
+import { User, Role } from "@/lib/types";
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string, role: Role) => boolean;
   logout: () => void;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const DEMO_USER: User = {
-  email: "pm@buildsync.com",
-  name: "Alex Morgan",
-  role: "project_manager",
-};
+// no default DEMO_USER needed anymore
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -26,9 +22,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = (email: string, password: string) => {
+  const login = (email: string, password: string, role: Role) => {
     if (email && password.length >= 4) {
-      const u = { ...DEMO_USER, email, name: email.split("@")[0] };
+      const u: User = { email, name: email.split("@")[0], role };
       setUser(u);
       localStorage.setItem("buildsync_user", JSON.stringify(u));
       return true;

@@ -5,19 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { HardHat, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { Role } from "@/lib/types";
 
 const Login = () => {
   const [email, setEmail] = useState("pm@buildsync.com");
   const [password, setPassword] = useState("demo");
+  const [role, setRole] = useState<Role>("project_manager");
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (login(email, password)) {
-      toast.success("Welcome to BuildSync!");
+    if (login(email, password, role)) {
+      toast.success(`Welcome to BuildSync! Signed in as ${role.replace("_", " ")}.`);
       navigate("/dashboard");
     } else {
       toast.error("Invalid credentials");
@@ -70,6 +73,19 @@ const Login = () => {
                   required
                   minLength={4}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label>Role</Label>
+                <Select value={role} onValueChange={(val) => setRole(val as Role)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="project_manager">Project Manager</SelectItem>
+                    <SelectItem value="procurement_officer">Procurement Officer</SelectItem>
+                    <SelectItem value="admin">Administrator</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Continue <ArrowRight className="ml-2 w-4 h-4" />
