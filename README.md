@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# BuildSync
 
-## Project info
+![BuildSync](https://img.shields.io/badge/Status-Active-brightgreen.svg) ![Version](https://img.shields.io/badge/Version-MVP-blue.svg)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+BuildSync is an automated resource planning and management system tailored for small and mid-scale construction projects. It bridges the gap between project scheduling and material/manpower procurement, moving away from disconnected spreadsheets into a deterministic, data-driven calculation engine.
 
-## How can I edit this code?
+## 📖 Documentation Directory
 
-There are several ways of editing your application.
+The complete technical and architectural documentation has been professionally structured into individual modules. Please refer to the specific documents below for deep dives into particular architectural strategies, use cases, and technical alignment.
 
-**Use Lovable**
+### 1. Vision & Strategy
+*   [Idea Alignment](docs/IDEA_ALIGNMENT.md) - Core problem summaries and domain value.
+*   [Problem Statement](docs/PROBLEM_STATEMENT.md) - Industry pain points and the gap current solutions leave.
+*   [Objectives](docs/OBJECTIVES.md) - Quantifiable engineering and business goals.
+*   [MVP Scope](docs/MVP_SCOPE.md) - Features included and strict architectural exclusions.
+*   [Results & Outcomes](docs/RESULTS_AND_OUTCOMES.md) - Key performance indicators and metrics.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 2. System Architecture & Design
+*   [System Architecture](docs/SYSTEM_ARCHITECTURE.md) - 3-tier modular monolith layout and scaling strategy.
+*   [Database Schema](docs/DATABASE_SCHEMA.md) - Third Normal Form (3NF) breakdown and integrity constraints.
+*   [Tech Stack](docs/TECH_STACK.md) - Rationale for using Node.js, React, and PostgreSQL.
+*   [Workflow](docs/WORKFLOW.md) - End-to-End Orchestration and event lifecycles.
+*   [State Machine](docs/STATE_MACHINE.md) - Strict, decoupled workflow states for material requests.
 
-Changes made via Lovable will be committed automatically to this repo.
+### 3. Usage & Operations
+*   [User Roles](docs/USER_ROLES.md) - Security, RBAC, and the Principle of Least Privilege.
+*   [Use Cases](docs/USE_CASES.md) - API contracts and system interaction boundaries.
+*   [Assumptions & Constraints](docs/ASSUMPTIONS_AND_LIMITATIONS.md) - System constraints, guardrails, and acceptable trade-offs.
 
-**Use your preferred IDE**
+### 4. Development & QA
+*   [Development Plan](docs/DEVELOPMENT_PLAN.md) - Agile vertical slicing vs waterfall.
+*   [Version Control](docs/VERSION_CONTROL.md) - Trunk-based development and CI pipeline hygiene.
+*   [Testing Strategy](docs/TESTING_STRATEGY.md) - Implementing the Enterprise Test Pyramid (Unit -> Integration -> E2E).
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 5. Roadmap
+*   [Future Enhancements](docs/FUTURE_ENHANCEMENTS.md) - SaaS integration, AI forecasting, and mobile application strategies.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+> *"BuildSync is designed to replace heuristic estimation with deterministic algorithmic planning, ensuring Just-In-Time delivery, minimal material waste, and absolute operational auditability."*
